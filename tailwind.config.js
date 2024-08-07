@@ -6,6 +6,7 @@ export default {
       colors: {
         primary: "rgb(225, 90, 29)",
         secondary: "rgb(136, 178, 171)",
+        neutral: "#EFEAE5",
       },
     },
   },

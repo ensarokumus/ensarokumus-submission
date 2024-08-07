@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { ArrowUp, RotateCw, RotateCcw } from "lucide-react";
+import BellroyIcon from "./BellroyIcon";
 
 type Position = {
   x: number;
@@ -73,11 +74,17 @@ const RobotControl = () => {
   }, [handleKeyDown]);
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-100 p-5 sm:p-10 gap-3">
-      <h1 className="text-4xl font-bold text-primary">
-        Bellroy | robot challenge
-      </h1>
-      <p className="text-[1.75rem] mb-5 text-gray-800 max-w-lg">
+    <div className="flex flex-col items-center justify-center bg-gray-100 p-5 sm:p-10 rounded">
+      <div className="flex items-center justify-between gap-5 sm:gap-5">
+        <svg className="w-32 sm:w-36 -mt-6">
+          <BellroyIcon />
+        </svg>
+        <span className="text-4xl font-bold text-primary">|</span>
+        <h1 className="text-3xl sm:text-4xl font-bold text-primary">
+          robot challenge
+        </h1>
+      </div>
+      <p className="text-2xl mb-5 text-gray-800 max-w-md">
         Control the Bellrobot with the buttons below or with your keyboard!
       </p>
       <div className="grid grid-cols-5 gap-1 mb-8">
@@ -112,24 +119,24 @@ const RobotControl = () => {
       <div className="flex justify-center space-x-4">
         <button
           onClick={moveForward}
-          className="bg-secondary hover:bg-secondary hover:brightness-90 text-white px-4 py-2 rounded transition-colors"
+          className="flex items-center bg-secondary hover:bg-secondary hover:brightness-90 text-white px-4 py-2 rounded transition-all shadow-lg shadow-black/40 hover:shadow-black/20"
         >
-          <ArrowUp className="inline mr-2" />
-          Move Forward (↑/W)
+          <ArrowUp className="inline mr-2 size-6" />
+          <span className="ml-2 border rounded p-1 ">↑/W</span>
         </button>
         <button
           onClick={() => rotate(true)}
-          className="text-white px-4 py-2 rounded transition-colors"
+          className="flex items-center bg-primary hover:bg-primary hover:brightness-90 text-white px-4 py-2 rounded transition-all shadow-lg shadow-black/40 hover:shadow-black/20"
         >
-          <RotateCw className="inline mr-2" />
-          Rotate CW (→/D)
+          <RotateCw className="inline mr-2 size-6" />
+          <span className="ml-2 border rounded p-1 ">→/D</span>
         </button>
         <button
           onClick={() => rotate(false)}
-          className="text-white px-4 py-2 rounded transition-colors"
+          className="flex items-center bg-primary hover:bg-primary hover:brightness-90 text-white px-4 py-2 rounded transition-all shadow-lg shadow-black/40 hover:shadow-black/20"
         >
-          <RotateCcw className="inline mr-2" />
-          Rotate CCW (←/A)
+          <RotateCcw className="inline mr-2 size-6" />
+          <span className="ml-2 border rounded p-1 ">←/A</span>
         </button>
       </div>
     </div>
