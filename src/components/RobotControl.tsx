@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type Position = {
   x: number;
@@ -6,14 +6,13 @@ type Position = {
 };
 
 type Direction = "N" | "E" | "S" | "W";
+const directions: Direction[] = ["N", "E", "S", "W"];
 
 const RobotControl = () => {
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
   const [direction, setDirection] = useState<Direction>("N");
 
-  const directions: Direction[] = ["N", "E", "S", "W"];
-
-  const moveForward = () => {
+  const moveForward = useCallback(() => {
     const moves = {
       N: { x: 0, y: -1 },
       E: { x: 1, y: 0 },
@@ -30,14 +29,47 @@ const RobotControl = () => {
         y: newY < 0 ? 0 : newY > 4 ? 4 : newY,
       };
     });
-  };
+  }, [direction]);
 
-  const rotate = (clockwise: boolean) => {
-    const currentIndex = directions.indexOf(direction);
-    // modulo operation below allows rotation in any direction
-    const newIndex = (currentIndex + (clockwise ? 1 : -1) + 4) % 4;
-    setDirection(directions[newIndex]);
-  };
+  const rotate = useCallback(
+    (clockwise: boolean) => {
+      const currentIndex = directions.indexOf(direction);
+      // modulo operation below allows rotation in any direction
+      const newIndex = (currentIndex + (clockwise ? 1 : -1) + 4) % 4;
+      setDirection(directions[newIndex]);
+    },
+    [direction]
+  );
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      switch (event.key) {
+        case "ArrowUp":
+        case "w":
+        case "W":
+          moveForward();
+          break;
+        case "ArrowRight":
+        case "d":
+        case "D":
+          rotate(true);
+          break;
+        case "ArrowLeft":
+        case "a":
+        case "A":
+          rotate(false);
+          break;
+      }
+    },
+    [moveForward, rotate]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   return (
     <div className="flex flex-col items-center justify-center bg-gray-100 p-5 sm:p-10 gap-3">
@@ -69,19 +101,19 @@ const RobotControl = () => {
           onClick={moveForward}
           className="bg-secondary hover:bg-secondary hover:brightness-90 text-white px-4 py-2 rounded transition-colors"
         >
-          Move Forward
+          Move Forward (↑/W)
         </button>
         <button
           onClick={() => rotate(true)}
           className="text-white px-4 py-2 rounded transition-colors"
         >
-          Rotate CW
+          Rotate CW (→/D)
         </button>
         <button
           onClick={() => rotate(false)}
           className="text-white px-4 py-2 rounded transition-colors"
         >
-          Rotate CCW
+          Rotate CCW (←/A)
         </button>
       </div>
     </div>
