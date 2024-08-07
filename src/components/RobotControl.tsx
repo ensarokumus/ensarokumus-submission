@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { ArrowUp, RotateCw, RotateCcw } from "lucide-react";
 
 type Position = {
   x: number;
@@ -10,7 +11,7 @@ const directions: Direction[] = ["N", "E", "S", "W"];
 
 const RobotControl = () => {
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
-  const [direction, setDirection] = useState<Direction>("N");
+  const [direction, setDirection] = useState<Direction>("E");
 
   const moveForward = useCallback(() => {
     const moves = {
@@ -76,10 +77,10 @@ const RobotControl = () => {
       <h1 className="text-4xl font-bold text-primary">
         Bellroy | robot challenge
       </h1>
-      <p className="text-[1.75rem] mb-8 text-gray-800">
-        Control the Bellrobot with the buttons below!
+      <p className="text-[1.75rem] mb-5 text-gray-800 max-w-lg">
+        Control the Bellrobot with the buttons below or with your keyboard!
       </p>
-      <div className="grid grid-cols-5 gap-1 mb-4">
+      <div className="grid grid-cols-5 gap-1 mb-8">
         {[...Array(25)].map((_, index) => {
           const x = index % 5;
           const y = Math.floor(index / 5);
@@ -91,7 +92,19 @@ const RobotControl = () => {
                 isRobot ? "bg-primary text-white" : "bg-white"
               } flex items-center justify-center`}
             >
-              {isRobot && direction}
+              {isRobot && (
+                <ArrowUp
+                  className={`text-white transform ${
+                    direction === "E"
+                      ? "rotate-90"
+                      : direction === "S"
+                      ? "rotate-180"
+                      : direction === "W"
+                      ? "-rotate-90"
+                      : ""
+                  }`}
+                />
+              )}
             </div>
           );
         })}
@@ -101,18 +114,21 @@ const RobotControl = () => {
           onClick={moveForward}
           className="bg-secondary hover:bg-secondary hover:brightness-90 text-white px-4 py-2 rounded transition-colors"
         >
+          <ArrowUp className="inline mr-2" />
           Move Forward (↑/W)
         </button>
         <button
           onClick={() => rotate(true)}
           className="text-white px-4 py-2 rounded transition-colors"
         >
+          <RotateCw className="inline mr-2" />
           Rotate CW (→/D)
         </button>
         <button
           onClick={() => rotate(false)}
           className="text-white px-4 py-2 rounded transition-colors"
         >
+          <RotateCcw className="inline mr-2" />
           Rotate CCW (←/A)
         </button>
       </div>
