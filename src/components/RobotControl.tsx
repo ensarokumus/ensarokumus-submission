@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { ArrowUp, RotateCw, RotateCcw } from "lucide-react";
-import BellroyIcon from "./BellroyIcon";
+import BellroyLogo from "./BellroyLogo";
 
 type Position = {
   x: number;
@@ -74,20 +74,23 @@ const RobotControl = () => {
   }, [handleKeyDown]);
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-100 p-5 sm:p-10 rounded">
-      <div className="flex items-center justify-between gap-5 sm:gap-5">
-        <svg className="w-32 sm:w-36 -mt-6">
-          <BellroyIcon />
+    <main
+      className="flex flex-col items-center justify-center bg-gray-100 p-5 sm:p-10 rounded"
+      role="main"
+    >
+      <header className="flex items-center justify-between gap-5 sm:gap-5">
+        <svg className="w-32 sm:w-36 -mt-6" aria-hidden="true">
+          <BellroyLogo />
         </svg>
         <span className="text-4xl font-bold text-primary">|</span>
         <h1 className="text-3xl sm:text-4xl font-bold text-primary">
           robot challenge
         </h1>
-      </div>
+      </header>
       <p className="text-2xl mb-5 text-gray-800 max-w-md">
         Control the Bellrobot with the buttons below or with your keyboard!
       </p>
-      <div className="grid grid-cols-5 gap-1 mb-8">
+      <section className="grid grid-cols-5 gap-1 mb-8" role="grid">
         {[...Array(25)].map((_, index) => {
           const x = index % 5;
           const y = Math.floor(index / 5);
@@ -98,12 +101,18 @@ const RobotControl = () => {
               className={`w-16 h-16 border ${
                 isRobot ? "bg-primary text-white" : "bg-white"
               } flex items-center justify-center`}
+              role="gridcell"
+              aria-label={
+                isRobot ? `Robot is at grid ${x + 1},${y + 1}` : undefined
+              }
+              aria-hidden={!isRobot}
             >
               {isRobot && (
                 <div className="relative rounded-full bg-white p-2 w-14 h-14">
                   <img
                     className="absolute w-7 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                     src="/favicon.png"
+                    alt="Robot icon"
                   />
                   <span
                     className={`absolute text-sm text-primary transform ${
@@ -123,31 +132,34 @@ const RobotControl = () => {
             </div>
           );
         })}
-      </div>
+      </section>
       <div className="flex justify-center space-x-4">
         <button
           onClick={moveForward}
           className="flex items-center bg-secondary hover:bg-secondary hover:brightness-90 text-white px-4 py-2 rounded transition-all shadow-lg shadow-black/40 hover:shadow-black/20"
+          aria-label="Move Forward"
         >
-          <ArrowUp className="inline mr-2 size-6" />
+          <ArrowUp className="inline mr-2 size-6" aria-hidden="true" />
           <span className="ml-2 border rounded p-1 ">↑/W</span>
         </button>
         <button
           onClick={() => rotate(true)}
           className="flex items-center bg-primary hover:bg-primary hover:brightness-90 text-white px-4 py-2 rounded transition-all shadow-lg shadow-black/40 hover:shadow-black/20"
+          aria-label="Rotate Clockwise"
         >
-          <RotateCw className="inline mr-2 size-6" />
+          <RotateCw className="inline mr-2 size-6" aria-hidden="true" />
           <span className="ml-2 border rounded p-1 ">→/D</span>
         </button>
         <button
           onClick={() => rotate(false)}
           className="flex items-center bg-primary hover:bg-primary hover:brightness-90 text-white px-4 py-2 rounded transition-all shadow-lg shadow-black/40 hover:shadow-black/20"
+          aria-label="Rotate Counterclockwise"
         >
-          <RotateCcw className="inline mr-2 size-6" />
+          <RotateCcw className="inline mr-2 size-6" aria-hidden="true" />
           <span className="ml-2 border rounded p-1 ">←/A</span>
         </button>
       </div>
-    </div>
+    </main>
   );
 };
 
