@@ -11,6 +11,34 @@ const RobotControl = () => {
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
   const [direction, setDirection] = useState<Direction>("N");
 
+  const directions: Direction[] = ["N", "E", "S", "W"];
+
+  const moveForward = () => {
+    const moves = {
+      N: { x: 0, y: -1 },
+      E: { x: 1, y: 0 },
+      S: { x: 0, y: 1 },
+      W: { x: -1, y: 0 },
+    };
+
+    // constraints the position (x,y) of robot inside the 5x5 grid
+    setPosition((prev) => {
+      const newX = prev.x + moves[direction].x;
+      const newY = prev.y + moves[direction].y;
+      return {
+        x: newX < 0 ? 0 : newX > 4 ? 4 : newX,
+        y: newY < 0 ? 0 : newY > 4 ? 4 : newY,
+      };
+    });
+  };
+
+  const rotate = (clockwise: boolean) => {
+    const currentIndex = directions.indexOf(direction);
+    // modulo operation below allows rotation in any direction
+    const newIndex = (currentIndex + (clockwise ? 1 : -1) + 4) % 4;
+    setDirection(directions[newIndex]);
+  };
+
   return (
     <div className="flex flex-col items-center justify-center bg-gray-100 p-5 sm:p-10 gap-3">
       <h1 className="text-4xl font-bold text-primary">
@@ -37,13 +65,22 @@ const RobotControl = () => {
         })}
       </div>
       <div className="flex justify-center space-x-4">
-        <button className="bg-secondary hover:bg-secondary hover:brightness-90 text-white px-4 py-2 rounded transition-colors">
+        <button
+          onClick={moveForward}
+          className="bg-secondary hover:bg-secondary hover:brightness-90 text-white px-4 py-2 rounded transition-colors"
+        >
           Move Forward
         </button>
-        <button className="text-white px-4 py-2 rounded transition-colors">
+        <button
+          onClick={() => rotate(true)}
+          className="text-white px-4 py-2 rounded transition-colors"
+        >
           Rotate CW
         </button>
-        <button className="text-white px-4 py-2 rounded transition-colors">
+        <button
+          onClick={() => rotate(false)}
+          className="text-white px-4 py-2 rounded transition-colors"
+        >
           Rotate CCW
         </button>
       </div>
