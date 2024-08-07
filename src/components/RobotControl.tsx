@@ -100,17 +100,25 @@ const RobotControl = () => {
               } flex items-center justify-center`}
             >
               {isRobot && (
-                <ArrowUp
-                  className={`text-white transform ${
-                    direction === "E"
-                      ? "rotate-90"
-                      : direction === "S"
-                      ? "rotate-180"
-                      : direction === "W"
-                      ? "-rotate-90"
-                      : ""
-                  }`}
-                />
+                <div className="relative rounded-full bg-white p-2 w-14 h-14">
+                  <img
+                    className="absolute w-7 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                    src="/favicon.png"
+                  />
+                  <span
+                    className={`absolute text-sm text-primary transform ${
+                      direction === "E"
+                        ? "rotate-90 top-[50%] translate-y-[-50%] right-0"
+                        : direction === "S"
+                        ? "rotate-180 translate-x-[-50%] -bottom-1"
+                        : direction === "W"
+                        ? "-rotate-90 top-[50%] translate-y-[-50%] left-0"
+                        : "translate-x-[-50%] -top-1"
+                    }`}
+                  >
+                    ▲
+                  </span>
+                </div>
               )}
             </div>
           );
